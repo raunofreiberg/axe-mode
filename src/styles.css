@@ -1,0 +1,65 @@
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+axe-mode-overlay {
+  position: absolute;
+  background: rgba(255, 91, 91, 0.2);
+  border: 1px solid rgba(255, 91, 91);
+}
+
+.popover {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+  Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  position: absolute;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 rgba(189, 192, 207, 0.16);
+  border: 1px solid #E6EBF4;
+  background-color: white;
+  padding: 16px;
+  margin: 8px 0;
+  z-index: 1337;
+  animation: slideDown 0.4s ease-in-out;
+}
+
+.popover h1,
+.popover p {
+  margin: 0;
+}
+
+.popover h1 {
+  margin-bottom: 16px;
+  font-size: 24px;
+}
+
+.popover h2 {
+  max-width: 40ch;
+}
+
+.popover p {
+  color: #505366;
+  max-width: 40ch;
+  margin-top: 8px;
+}
+
+.popover a {
+  color: #6469FF;
+}
+
+code {
+  box-sizing: border-box;
+  font-size: 13px;
+  line-height: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: rgb(229, 243, 255);
+  color: #6469FF;
+  border-radius: 3px;
+}
