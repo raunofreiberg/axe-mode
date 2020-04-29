@@ -31,7 +31,7 @@ import AxeMode from 'axe-mode';
 function App() {
   return (
     <AxeMode disabled={process.env.NODE_ENV !== 'development'}>
-      <h1 aria-expanded="123"></h1>
+      <h1 aria-expanded="123">Hello world!</h1>
     </AxeMode>
   );
 }
