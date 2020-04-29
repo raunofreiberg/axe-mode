@@ -1,6 +1,6 @@
 # axe-mode
 
-![Demo](./demo.png)
+![Preview](./preview.png)
 
 > WIP
 
