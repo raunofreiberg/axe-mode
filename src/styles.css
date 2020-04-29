@@ -14,6 +14,7 @@ axe-mode-overlay {
   background: rgba(255, 91, 91, 0.2);
   border: 1px solid rgb(255, 91, 91);
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .popover {
@@ -36,7 +37,6 @@ axe-mode-overlay {
 }
 
 .popover h1 {
-  margin-bottom: 16px;
   font-size: 24px;
 }
 
@@ -54,13 +54,18 @@ axe-mode-overlay {
   color: #6469FF;
 }
 
-code {
-  box-sizing: border-box;
-  font-size: 13px;
-  line-height: 20px;
-  padding-left: 5px;
-  padding-right: 5px;
-  background-color: rgb(229, 243, 255);
-  color: #6469FF;
-  border-radius: 3px;
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.close {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
 }

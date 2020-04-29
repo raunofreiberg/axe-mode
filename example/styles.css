@@ -42,7 +42,7 @@ input {
   color: #222328;
 }
 
-button {
+.login button {
   padding: 0 16px;
   background: #222328;
   height: 40px;

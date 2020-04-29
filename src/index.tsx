@@ -43,56 +43,88 @@ function setOverlayPosition(
   overlayNode.style.setProperty('top', `${y}px`);
 }
 
-function Violation(props: { target: any; violations: Result[] }) {
-  const targetRef = React.useRef(null);
+function Violation({ target, violations }: { target: any; violations: Result[] }) {
   const [open, setOpen] = React.useState(false);
+  const targetRef = React.useRef<HTMLElement | null>(null);
+  const popoverRef = React.useRef<HTMLDivElement | null>(null);
+  const overlayRef = React.useRef<HTMLElement | null>(null);
 
-  function handleMouseEnter() {
-    setOpen(true);
+  function toggle() {
+    setOpen(prevOpen => !prevOpen);
   }
 
-  function handleMouseLeave() {
+  function close() {
     setOpen(false);
   }
 
   React.useEffect(() => {
-    const targetNode = document.querySelector(props.target);
-    targetRef.current = targetNode;
-
+    const targetNode = document.querySelector(target);
     const overlayNode = document.createElement('axe-mode-overlay');
+
+    targetRef.current = targetNode;
+    overlayRef.current = overlayNode;
+
     const { observe, unobserve } = observeRect(targetNode, targetRect => {
       setOverlayPosition(overlayNode, targetRect);
     });
 
-    document.body.appendChild(overlayNode);
     observe();
-    overlayNode.addEventListener('mouseenter', handleMouseEnter);
-    overlayNode.addEventListener('mouseleave', handleMouseLeave);
+    document.body.appendChild(overlayNode);
+    overlayNode.addEventListener('mousedown', toggle);
 
     return () => {
-      document.body.removeChild(overlayNode);
       unobserve();
-      overlayNode.removeEventListener('mouseenter', handleMouseEnter);
-      overlayNode.removeEventListener('mouseleave', handleMouseLeave);
+      document.body.removeChild(overlayNode);
+      overlayNode.removeEventListener('mousedown', toggle);
     };
-  }, [props.target]);
+  }, [target]);
+
+  React.useEffect(() => {
+    function listener(e: MouseEvent) {
+      const eventTarget = e.target as Node;
+      const isTargetInPopover = eventTarget === overlayRef.current || popoverRef.current?.contains(eventTarget);
+
+      if (!isTargetInPopover) {
+        close();
+      }
+    }
+
+    if (open) {
+      document.addEventListener('mousedown', listener);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', listener);
+    };
+  }, [open, target]);
 
   if (!open) {
     return null;
   }
 
   return (
-    <Popover targetRef={targetRef} className="popover">
-      <h1>{props.target}</h1>
-      {props.violations.map(violation => {
+    <Popover ref={popoverRef} targetRef={targetRef} className="popover">
+      <div className="controls">
+        <h1>{target}</h1>
+        <button className="close" aria-label="Close popover" onClick={close}>
+          <svg viewBox="0 0 24 24">
+            <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                fill="currentColor"
+                fillRule="evenodd"
+            />
+          </svg>
+        </button>
+      </div>
+      {violations.map(violation => {
         const checksByNode = [
           // Array of checks that were made where at least one must have passed
           ...violation.nodes.filter(node =>
-            node.target.includes(props.target)
+            node.target.includes(target)
           )[0].any,
           // Array of checks that were made where all must have passed.
           ...violation.nodes.filter(node =>
-            node.target.includes(props.target)
+            node.target.includes(target)
           )[0].all,
         ];
 
@@ -124,6 +156,7 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
   const [violations, setViolations] = React.useState<Result[]>([]);
   const [idleId, setIdleId] = React.useState(null);
   const child = React.useRef(null);
+  const [interactive, setInteractive] = React.useState(false);
 
   React.useEffect(() => {
     if (disabled) {
@@ -151,11 +184,27 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
     }
   }, [children, disabled]);
 
+  React.useEffect(() => {
+    function listener(e: KeyboardEvent) {
+      if (e.ctrlKey && e.key === 'i') {
+        setInteractive(!interactive);
+      }
+    }
+
+    document.addEventListener('keydown', listener);
+
+    return () => {
+      document.removeEventListener('keydown', listener);
+    }
+  }, [interactive]);
+
   const violationsByNode = segmentViolationsByNode(violations);
 
-  if (disabled) {
+  if (disabled || interactive) {
     return <>{children}</>;
   }
+
+  console.log(violationsByNode);
 
   return (
     <>
