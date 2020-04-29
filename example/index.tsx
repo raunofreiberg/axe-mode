@@ -7,30 +7,33 @@ import AxeMode from '../src/index';
 const App = () => {
   return (
     <AxeMode>
-        <header>
-            <a href="#" className="iconLink">
-                <svg width="24" height="24" viewBox="0 0 24 24">
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
-                        fill="currentColor"
-                    />
-                </svg>
-            </a>
-            <img
-                src="https://avatars1.githubusercontent.com/u/23662329?v=4"
-                width="40"
-                height="40"
+      <header>
+        <a href="#" className="iconLink" id="hey">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+              fill="currentColor"
             />
-        </header>
-        <main>
-            <div className="login">
-                <h1>Axe Mode</h1>
-                <h6>Accessibility testing componentized</h6>
-                <input placeholder="Username" />
-                <input placeholder="Password" />
-                <button aria-labelledby="foo">Label</button>
-            </div>
-        </main>
+          </svg>
+        </a>
+        <img
+          src="https://avatars1.githubusercontent.com/u/23662329?v=4"
+          width="40"
+          height="40"
+          id="hey"
+        />
+      </header>
+      <main>
+        <div className="login">
+          <h1>Axe Mode</h1>
+          <h6>Accessibility testing componentized</h6>
+          <input placeholder="Username" />
+          <input placeholder="Password" />
+          <button aria-expanded="foo" onClick={() => console.log('yo')}>
+            Label
+          </button>
+        </div>
+      </main>
     </AxeMode>
   );
 };

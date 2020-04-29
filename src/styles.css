@@ -37,28 +37,61 @@ axe-mode-overlay {
 }
 
 .popover h1 {
-  font-size: 24px;
+  font-size: 20px;
+  color: #222328;
+}
+
+.popover ul {
+  padding-left: 14px;
+  margin-top: 8px;
+  margin-bottom: 0;
+  list-style-type: '・ ';
+}
+
+.popover li {
+  padding: 0;
+  max-width: 40ch;
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  color: #505366;
+}
+
+.popover small {
+  display: block;
+  font-size: 12px;
+  color: #BDC0CF;
+  margin: 4px 0 8px 0;
 }
 
 .popover h2 {
   max-width: 40ch;
 }
 
-.popover p {
-  color: #505366;
-  max-width: 40ch;
-  margin-top: 8px;
-}
-
 .popover a {
   color: #6469FF;
+}
+
+
+.popover code {
+  font-size: 12px;
+  line-height: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: rgba(100, 105, 255, 0.05);
+  color: #6469FF;
+  border-radius: 3px;
+}
+
+
+.popover .checks {
+  margin-top: 16px;
 }
 
 .controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
 .close {

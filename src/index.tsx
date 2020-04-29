@@ -43,7 +43,13 @@ function setOverlayPosition(
   overlayNode.style.setProperty('top', `${y}px`);
 }
 
-function Violation({ target, violations }: { target: any; violations: Result[] }) {
+function Violation({
+  target,
+  violations,
+}: {
+  target: any;
+  violations: Result[];
+}) {
   const [open, setOpen] = React.useState(false);
   const targetRef = React.useRef<HTMLElement | null>(null);
   const popoverRef = React.useRef<HTMLDivElement | null>(null);
@@ -82,7 +88,9 @@ function Violation({ target, violations }: { target: any; violations: Result[] }
   React.useEffect(() => {
     function listener(e: MouseEvent) {
       const eventTarget = e.target as Node;
-      const isTargetInPopover = eventTarget === overlayRef.current || popoverRef.current?.contains(eventTarget);
+      const isTargetInPopover =
+        eventTarget === overlayRef.current ||
+        popoverRef.current?.contains(eventTarget);
 
       if (!isTargetInPopover) {
         close();
@@ -103,33 +111,27 @@ function Violation({ target, violations }: { target: any; violations: Result[] }
   }
 
   return (
-    <Popover ref={popoverRef} targetRef={targetRef} className="popover">
+    <Popover ref={popoverRef} targetRef={targetRef} className="popover">
       <div className="controls">
-        <h1>{target}</h1>
+        <h1>Accessibility violation</h1>
         <button className="close" aria-label="Close popover" onClick={close}>
           <svg viewBox="0 0 24 24">
             <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-                fill="currentColor"
-                fillRule="evenodd"
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              fill="currentColor"
+              fillRule="evenodd"
             />
           </svg>
         </button>
       </div>
+      <code>{target}</code>
       {violations.map(violation => {
-        const checksByNode = [
-          // Array of checks that were made where at least one must have passed
-          ...violation.nodes.filter(node =>
-            node.target.includes(target)
-          )[0].any,
-          // Array of checks that were made where all must have passed.
-          ...violation.nodes.filter(node =>
-            node.target.includes(target)
-          )[0].all,
-        ];
+        const [{ any, all }] = violation.nodes.filter(node =>
+          node.target.includes(target)
+        );
 
         return (
-          <div key={violation.id}>
+          <div key={violation.id} className="checks">
             <a
               href={violation.helpUrl}
               target="_blank"
@@ -137,9 +139,26 @@ function Violation({ target, violations }: { target: any; violations: Result[] }
             >
               {violation.help}
             </a>
-            {checksByNode.map(check => (
-              <p key={check.id}>{check.message}</p>
-            ))}
+            {!!all.length && (
+              <>
+                <small>Fix all of the following:</small>
+                <ul>
+                  {all.map(check => (
+                    <li key={check.id}>{check.message}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {!!any.length && (
+              <>
+                <small>Fix any of the following:</small>
+                <ul>
+                  {any.map(check => (
+                    <li key={check.id}>{check.message}</li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
         );
       })}
@@ -195,7 +214,7 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
 
     return () => {
       document.removeEventListener('keydown', listener);
-    }
+    };
   }, [interactive]);
 
   const violationsByNode = segmentViolationsByNode(violations);
