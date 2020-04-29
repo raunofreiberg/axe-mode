@@ -1,12 +1,12 @@
 # axe-mode
 
-![Preview](./preview.png)
-
 > WIP
 
 This project is an attempt to leverage [`axe-core`](https://github.com/dequelabs/axe-core) in a component to find accessibility violations and provide information on how to resolve them.
 
 Currently, this only works for React.
+
+![Preview](./preview.png)
 
 
 ## Usage

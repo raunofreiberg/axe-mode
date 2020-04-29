@@ -1,8 +1,8 @@
+import './styles.css';
 import * as React from 'react';
 import axe, { ElementContext, Result } from 'axe-core';
 import Popover from '@reach/popover';
 import observeRect from '@reach/observe-rect';
-import './styles.css';
 
 type ViolationsByNode = Array<{ node: string; violations: Result[] }>;
 
@@ -116,7 +116,7 @@ function Violation(props: { target: any; violations: Result[] }) {
 }
 
 export interface AxeModeProps {
-  children: React.ReactElement;
+  children: React.ReactElement | React.ReactElement[];
   disabled?: boolean;
 }
 
@@ -154,7 +154,7 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
   const violationsByNode = segmentViolationsByNode(violations);
 
   if (disabled) {
-    return children;
+    return <>{children}</>;
   }
 
   return (

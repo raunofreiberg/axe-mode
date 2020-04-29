@@ -10,7 +10,7 @@
 }
 
 axe-mode-overlay {
-  position: absolute;
+  position: fixed;
   background: rgba(255, 91, 91, 0.2);
   border: 1px solid rgba(255, 91, 91);
 }
