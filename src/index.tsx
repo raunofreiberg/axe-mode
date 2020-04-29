@@ -1,6 +1,7 @@
 import * as React from 'react';
 import axe, { ElementContext, Result } from 'axe-core';
 import Popover from '@reach/popover';
+import observeRect from '@reach/observe-rect';
 import './styles.css';
 
 type ViolationsByNode = Array<{ node: string; violations: Result[] }>;
@@ -32,6 +33,16 @@ function segmentViolationsByNode(violations: Result[]): ViolationsByNode {
   });
 }
 
+function setOverlayPosition(
+  overlayNode: HTMLElement,
+  { width, height, x, y }: DOMRect
+) {
+  overlayNode.style.setProperty('width', `${width - 2}px`); // Minus border
+  overlayNode.style.setProperty('height', `${height - 2}px`); // Minus border
+  overlayNode.style.setProperty('left', `${x}px`);
+  overlayNode.style.setProperty('top', `${y}px`);
+}
+
 function Violation(props: { target: any; violations: Result[] }) {
   const targetRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
@@ -48,27 +59,27 @@ function Violation(props: { target: any; violations: Result[] }) {
     const targetNode = document.querySelector(props.target);
     targetRef.current = targetNode;
 
-    const popoverNode = document.createElement('axe-mode-overlay');
-    const bounds = targetNode.getBoundingClientRect();
-
-    popoverNode.style.setProperty('width', `${bounds.width - 2}px`); // Minus border
-    popoverNode.style.setProperty('height', `${bounds.height - 2}px`); // Minus border
-    ['top', 'right', 'bottom', 'left'].forEach(property => {
-      popoverNode.style.setProperty(property, `${bounds[property]}px`);
+    const overlayNode = document.createElement('axe-mode-overlay');
+    const { observe, unobserve } = observeRect(targetNode, targetRect => {
+      setOverlayPosition(overlayNode, targetRect);
     });
 
-    document.body.appendChild(popoverNode);
-
-    popoverNode.addEventListener('mouseenter', handleMouseEnter);
-    popoverNode.addEventListener('mouseleave', handleMouseLeave);
+    document.body.appendChild(overlayNode);
+    observe();
+    overlayNode.addEventListener('mouseenter', handleMouseEnter);
+    overlayNode.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      popoverNode.removeEventListener('mouseenter', handleMouseEnter);
-      popoverNode.removeEventListener('mouseleave', handleMouseLeave);
+      document.body.removeChild(overlayNode);
+      unobserve();
+      overlayNode.removeEventListener('mouseenter', handleMouseEnter);
+      overlayNode.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, [props.target]);
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
   return (
     <Popover targetRef={targetRef} className="popover">
@@ -105,15 +116,20 @@ function Violation(props: { target: any; violations: Result[] }) {
 }
 
 export interface AxeModeProps {
-  children: React.ReactNode;
+  children: React.ReactElement;
+  disabled?: boolean;
 }
 
-export function A11y({ children }: AxeModeProps) {
+export default function AxeMode({ children, disabled }: AxeModeProps) {
   const [violations, setViolations] = React.useState<Result[]>([]);
   const [idleId, setIdleId] = React.useState(null);
   const child = React.useRef(null);
 
   React.useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
     if (child.current) {
       if (idleId) {
         // requestIdleCallback has no types:
@@ -137,7 +153,9 @@ export function A11y({ children }: AxeModeProps) {
 
   const violationsByNode = segmentViolationsByNode(violations);
 
-  console.log(violationsByNode);
+  if (disabled) {
+    return children;
+  }
 
   return (
     <>

@@ -18,6 +18,7 @@
     "prepare": "tsdx build"
   },
   "peerDependencies": {
+    "axe-core": "^3.5.3",
     "react": ">=16"
   },
   "husky": {
@@ -45,6 +46,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@reach/observe-rect": "^1.1.0",
     "@reach/popover": "^0.10.1",
     "axe-core": "^3.5.3",
     "rollup-plugin-postcss": "^3.1.1"

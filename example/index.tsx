@@ -1,11 +1,11 @@
 import 'react-app-polyfill/ie11';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { A11y } from '../src/index';
+import AxeMode from '../src/index';
 
 const App = () => {
   return (
-    <A11y>
+    <AxeMode>
       <div style={{ padding: 32 }}>
         <span
           style={{
@@ -26,9 +26,11 @@ const App = () => {
         <button id="yo" />
         <button />
         <input id="yo" />
-        <button aria-expanded="asdadas">Sup!</button>
+        <button aria-expanded="asdadas" style={{ margin: 300 }}>
+          Sup!
+        </button>
       </div>
-    </A11y>
+    </AxeMode>
   );
 };
 
