@@ -174,15 +174,15 @@ export interface AxeModeProps {
 export default function AxeMode({ children, disabled }: AxeModeProps) {
   const [violations, setViolations] = React.useState<Result[]>([]);
   const [idleId, setIdleId] = React.useState(null);
-  const child = React.useRef(null);
   const [interactive, setInteractive] = React.useState(false);
+  const childrenRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
     if (disabled) {
       return;
     }
 
-    if (child.current) {
+    if (childrenRef.current) {
       if (idleId) {
         // requestIdleCallback has no types:
         // https://github.com/microsoft/TypeScript/issues/21309
@@ -195,9 +195,7 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
       // https://github.com/microsoft/TypeScript/issues/21309
       // @ts-ignore
       const id = requestIdleCallback(() => {
-        validateNode((child.current as unknown) as ElementContext).then(
-          setViolations
-        );
+        validateNode(childrenRef.current as ElementContext).then(setViolations);
       });
       setIdleId(id);
     }
@@ -227,7 +225,7 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
 
   return (
     <>
-      <span ref={child}>{children}</span>
+      <span ref={childrenRef}>{children}</span>
       {violationsByNode.map(({ node, violations }, index) => (
         <Violation key={index} target={node} violations={violations} />
       ))}
