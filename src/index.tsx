@@ -37,8 +37,8 @@ function setOverlayPosition(
   overlayNode: HTMLElement,
   { width, height, x, y }: DOMRect
 ) {
-  overlayNode.style.setProperty('width', `${width - 2}px`); // Minus border
-  overlayNode.style.setProperty('height', `${height - 2}px`); // Minus border
+  overlayNode.style.setProperty('width', `${width}px`);
+  overlayNode.style.setProperty('height', `${height}px`);
   overlayNode.style.setProperty('left', `${x}px`);
   overlayNode.style.setProperty('top', `${y}px`);
 }
@@ -149,7 +149,7 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
       });
       setIdleId(id);
     }
-  }, [children]);
+  }, [children, disabled]);
 
   const violationsByNode = segmentViolationsByNode(violations);
 
