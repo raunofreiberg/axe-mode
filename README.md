@@ -6,7 +6,7 @@ This project is an attempt to leverage [`axe-core`](https://github.com/dequelabs
 
 Currently, this only works for React.
 
-![Demo](https://i.gyazo.com/d5c3fdbf909387e28148f652c6555baa.gif)
+![Demo](https://i.gyazo.com/2eeb2f0bacbabfbe706932c545ec682c.gif)
 
 
 ## Usage
