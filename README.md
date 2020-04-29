@@ -6,7 +6,7 @@ This project is an attempt to leverage [`axe-core`](https://github.com/dequelabs
 
 Currently, this only works for React.
 
-![Preview](./preview.png)
+![Demo](./demo.png)
 
 
 ## Usage
