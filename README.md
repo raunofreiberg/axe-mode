@@ -39,9 +39,9 @@ function App() {
 }
 ```
 
-Launch your application as usual. Any violations of accessibility will show up as an overlay.
+Launch your application as usual. Any violations of accessibility will show up as an overlay. If you wish to interact with your application, overlays can be toggled on/off with `Ctrl + I`.
 
-**Note**: Make sure not to run this in production by using the `disabled` prop with your environment variable.
+**Note**: Make sure to only run in production by using the `disabled` prop with your environment variable.
 
 ## Development
 
