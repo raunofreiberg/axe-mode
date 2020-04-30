@@ -195,7 +195,7 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
     }
 
     if (childrenRef.current) {
-      if (idleId) {
+      if (idleId && 'cancelIdleCallback' in window) {
         // requestIdleCallback has no types:
         // https://github.com/microsoft/TypeScript/issues/21309
         // @ts-ignore
@@ -203,13 +203,20 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
         setIdleId(null);
       }
 
-      // requestIdleCallback has no types:
-      // https://github.com/microsoft/TypeScript/issues/21309
-      // @ts-ignore
-      const id = requestIdleCallback(() => {
+      function getViolations() {
         validateNode(childrenRef.current as ElementContext).then(setViolations);
-      });
-      setIdleId(id);
+      }
+
+      // Safari does not support requestIdleCallback 😔
+      if ('requestIdleCallback' in window) {
+        // requestIdleCallback has no types:
+        // https://github.com/microsoft/TypeScript/issues/21309
+        // @ts-ignore
+        const id = requestIdleCallback(getViolations);
+        setIdleId(id);
+      } else {
+        getViolations();
+      }
     }
   }, [children, disabled]);
 
