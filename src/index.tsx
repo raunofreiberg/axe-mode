@@ -16,6 +16,20 @@ function validateNode(node: ElementContext): Promise<Result[]> {
   });
 }
 
+// Copied from:
+// https://stackoverflow.com/questions/29321742/react-getting-a-component-from-a-dom-element-for-debugging
+// ¯\_(ツ)_/¯
+function getComponentFromNode(node: HTMLElement): string {
+  const [component] = Object.keys(node)
+    .filter(key => key.startsWith('__reactInternalInstance$'))
+    .map((key: string) => {
+      const fiberNode = (node as any)[key];
+      const component = fiberNode && fiberNode._debugOwner;
+      return component.type.displayName || component.type.name;
+    });
+  return component;
+}
+
 function segmentViolationsByNode(violations: Result[]): ViolationsByNode {
   // Find all DOM nodes affected by the violations
   const nodes = violations.flatMap(violation =>
@@ -125,7 +139,9 @@ function Violation({
           </svg>
         </button>
       </div>
-      <code>{target}</code>
+      <code>
+        {getComponentFromNode(document.querySelector(target)) || target}
+      </code>
       {violations.map(violation => {
         const [{ any, all }] = violation.nodes.filter(node =>
           node.target.includes(target)

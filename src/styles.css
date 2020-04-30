@@ -30,13 +30,8 @@ axe-mode-overlay {
   z-index: 1337;
   animation: slideDown 0.4s ease-in-out;
 }
-
-.popover h1,
-.popover p {
+.popover h2 {
   margin: 0;
-}
-
-.popover h1 {
   font-size: 20px;
   color: #222328;
 }
