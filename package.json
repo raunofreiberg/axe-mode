@@ -46,6 +46,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@reach/auto-id": "^0.10.1",
     "@reach/observe-rect": "^1.1.0",
     "@reach/popover": "^0.10.1",
     "axe-core": "^3.5.3",

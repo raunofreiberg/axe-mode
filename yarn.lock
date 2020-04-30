@@ -945,6 +945,14 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@reach/auto-id@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@reach/auto-id/-/auto-id-0.10.1.tgz#5c8f7573d6271e0e55df04e459a1d1d1cf11a216"
+  integrity sha512-xGFW2v+L39M/mafdW7v+NhhsjT1LBnQJCGj64dm37T4IGNgAexlfMkRRwsqHOvuVvV38mR114YOy0xrlkqduRQ==
+  dependencies:
+    "@reach/utils" "^0.10.1"
+    tslib "^1.11.1"
+
 "@reach/observe-rect@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@reach/observe-rect/-/observe-rect-1.1.0.tgz#4e967a93852b6004c3895d9ed8d4e5b41895afde"

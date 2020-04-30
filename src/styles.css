@@ -87,6 +87,24 @@ axe-mode-overlay {
   margin-top: 16px;
 }
 
+.popover .checks .header {
+  display: flex;
+  font-size: 1.2rem;
+  margin: 0.5em 0;
+  align-items: center;
+}
+
+.popover .checks .header svg {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.325em;
+}
+
+.popover .checks .header h3 {
+  font-size: 1em;
+  margin: 0;
+}
+
 .controls {
   display: flex;
   align-items: center;

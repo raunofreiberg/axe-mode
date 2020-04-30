@@ -3,6 +3,7 @@ import * as React from 'react';
 import axe, { ElementContext, Result } from 'axe-core';
 import Popover from '@reach/popover';
 import observeRect from '@reach/observe-rect';
+import { IconMinor, IconModerate, IconSevere } from './icons';
 
 type ViolationsByNode = Array<{ node: string; violations: Result[] }>;
 
@@ -113,7 +114,7 @@ function Violation({
   return (
     <Popover ref={popoverRef} targetRef={targetRef} className="popover">
       <div className="controls">
-        <h1>Accessibility violation</h1>
+        <h2>Accessibility violation</h2>
         <button className="close" aria-label="Close popover" onClick={close}>
           <svg viewBox="0 0 24 24">
             <path
@@ -131,14 +132,25 @@ function Violation({
         );
 
         return (
-          <div key={violation.id} className="checks">
-            <a
-              href={violation.helpUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {violation.help}
-            </a>
+          <article key={violation.id} className="checks">
+            <div className="header">
+              {violation.impact === 'minor' ? (
+                <IconMinor />
+              ) : violation.impact === 'moderate' ? (
+                <IconModerate />
+              ) : (
+                <IconSevere />
+              )}
+              <h3>
+                <a
+                  href={violation.helpUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {violation.help}
+                </a>
+              </h3>
+            </div>
             {!!all.length && (
               <>
                 <small>Fix all of the following:</small>
@@ -159,7 +171,7 @@ function Violation({
                 </ul>
               </>
             )}
-          </div>
+          </article>
         );
       })}
     </Popover>
