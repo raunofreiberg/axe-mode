@@ -11,8 +11,6 @@ Currently, this only works for React.
 
 ## Usage
 
-Make sure to have `axe-core` installed as a dependency.
-
 Install the library:
 
 ```bash
