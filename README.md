@@ -6,6 +6,8 @@ This project is an attempt to leverage [`axe-core`](https://github.com/dequelabs
 
 Currently, this only works for React.
 
+[See it in action on CodeSandbox.](https://codesandbox.io/s/divine-surf-bziuo?file=/src/App.tsx)
+
 ![Demo](https://i.gyazo.com/2eeb2f0bacbabfbe706932c545ec682c.gif)
 
 
