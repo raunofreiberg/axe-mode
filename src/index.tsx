@@ -185,7 +185,7 @@ export interface AxeModeProps {
 
 export default function AxeMode({ children, disabled }: AxeModeProps) {
   const [violations, setViolations] = React.useState<Result[]>([]);
-  const [idleId, setIdleId] = React.useState(null);
+  const idleId = React.useRef<number | null>(null);
   const [interactive, setInteractive] = React.useState(false);
   const childrenRef = React.useRef<HTMLElement | null>(null);
 
@@ -195,21 +195,26 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
     }
 
     if (childrenRef.current) {
-      if (idleId) {
-        // requestIdleCallback has no types:
-        // https://github.com/microsoft/TypeScript/issues/21309
-        // @ts-ignore
-        cancelIdleCallback(idleId);
-        setIdleId(null);
+      if (idleId.current && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId.current);
+        idleId.current = null;
       }
 
-      // requestIdleCallback has no types:
-      // https://github.com/microsoft/TypeScript/issues/21309
-      // @ts-ignore
-      const id = requestIdleCallback(() => {
-        validateNode(childrenRef.current as ElementContext).then(setViolations);
-      });
-      setIdleId(id);
+      // Safari does not support requestIdleCallback 😔
+      if ('requestIdleCallback' in window) {
+        idleId.current = window.requestIdleCallback(getViolations);
+      } else {
+        getViolations();
+      }
+    }
+    return () => {
+      if (idleId.current && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId.current);
+        idleId.current = null;
+      }
+    };
+    function getViolations() {
+      validateNode(childrenRef.current as ElementContext).then(setViolations);
     }
   }, [children, disabled]);
 
