@@ -4,6 +4,21 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import AxeMode from '../src/index';
 
+function Subtitle() {
+  return <h6>Accessibility testing componentized</h6>;
+}
+
+function Image() {
+  return (
+    <img
+      src="https://avatars1.githubusercontent.com/u/23662329?v=4"
+      width="40"
+      height="40"
+      id="hey"
+    />
+  );
+}
+
 const App = () => {
   return (
     <AxeMode>
@@ -16,17 +31,12 @@ const App = () => {
             />
           </svg>
         </a>
-        <img
-          src="https://avatars1.githubusercontent.com/u/23662329?v=4"
-          width="40"
-          height="40"
-          id="hey"
-        />
+        <Image />
       </header>
       <main>
         <div className="login">
           <h1>Axe Mode</h1>
-          <h6>Accessibility testing componentized</h6>
+          <Subtitle />
           <input placeholder="Username" />
           <input placeholder="Password" />
           <button
