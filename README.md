@@ -1,6 +1,6 @@
 # axe-mode
 
-![npm](https://img.shields.io/npm/v/axe-mode)
+![npm](https://img.shields.io/npm/v/axe-mode?color=%236469FF)
 
 > WIP
 
