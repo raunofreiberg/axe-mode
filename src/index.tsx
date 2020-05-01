@@ -190,7 +190,7 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
   const childrenRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
-    if (disabled) {
+    if (disabled || interactive) {
       return;
     }
 
@@ -216,7 +216,7 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
     function getViolations() {
       validateNode(childrenRef.current as ElementContext).then(setViolations);
     }
-  }, [children, disabled]);
+  }, [children, disabled, interactive]);
 
   React.useEffect(() => {
     function listener(e: KeyboardEvent) {
