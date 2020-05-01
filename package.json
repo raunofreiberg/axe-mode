@@ -53,7 +53,6 @@
   },
   "eslintConfig": {
     "extends": "react-app",
-    "// We have intentional violations in the example for testing, so we can turn off jsx-a11y rules for them only": "",
     "overrides": [
       {
         "files": [

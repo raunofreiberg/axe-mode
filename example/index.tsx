@@ -29,7 +29,10 @@ const App = () => {
           <h6>Accessibility testing componentized</h6>
           <input placeholder="Username" />
           <input placeholder="Password" />
-          <button aria-expanded="foo" onClick={() => console.log('yo')}>
+          <button
+            aria-expanded={'foo' as any}
+            onClick={() => console.log('yo')}
+          >
             Label
           </button>
         </div>
