@@ -210,7 +210,9 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
   const childrenRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
-    import('axe-core').then(setAxe);
+    if (!disabled) {
+      import('axe-core').then(setAxe);
+    }
   }, []);
 
   React.useEffect(() => {
