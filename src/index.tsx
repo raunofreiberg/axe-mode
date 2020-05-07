@@ -1,19 +1,22 @@
 import './styles.css';
 import * as React from 'react';
-import axe, { ElementContext, Result } from 'axe-core';
+import { ElementContext, Result } from 'axe-core';
 import Popover from '@reach/popover';
 import observeRect from '@reach/observe-rect';
 import { IconMinor, IconModerate, IconSevere } from './icons';
 
 type ViolationsByNode = Array<{ node: string; violations: Result[] }>;
+type AxeCoreModule = typeof import('axe-core');
 
-function validateNode(node: ElementContext): Promise<Result[]> {
-  return new Promise((resolve, reject) => {
-    axe.run(node, { reporter: 'v2' }, (error, results) => {
-      if (error) reject(error);
-      resolve(results.violations);
+function getValidator(axe: AxeCoreModule) {
+  return (node: ElementContext): Promise<Result[]> => {
+    return new Promise((resolve, reject) => {
+      axe.run(node, { reporter: 'v2' }, (error, results) => {
+        if (error) reject(error);
+        resolve(results.violations);
+      });
     });
-  });
+  };
 }
 
 // Copied from:
@@ -200,13 +203,18 @@ export interface AxeModeProps {
 }
 
 export default function AxeMode({ children, disabled }: AxeModeProps) {
+  const [axe, setAxe] = React.useState<AxeCoreModule | null>(null);
   const [violations, setViolations] = React.useState<Result[]>([]);
-  const idleId = React.useRef<number | null>(null);
   const [interactive, setInteractive] = React.useState(false);
+  const idleId = React.useRef<number | null>(null);
   const childrenRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
-    if (disabled || interactive) {
+    import('axe-core').then(setAxe);
+  }, []);
+
+  React.useEffect(() => {
+    if (disabled || interactive || !axe) {
       return;
     }
 
@@ -230,9 +238,10 @@ export default function AxeMode({ children, disabled }: AxeModeProps) {
       }
     };
     function getViolations() {
+      const validateNode = getValidator(axe as AxeCoreModule);
       validateNode(childrenRef.current as ElementContext).then(setViolations);
     }
-  }, [children, disabled, interactive]);
+  }, [children, disabled, interactive, axe]);
 
   React.useEffect(() => {
     function listener(e: KeyboardEvent) {
