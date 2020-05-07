@@ -209,16 +209,21 @@ export default function AxeModeImpl({ children, disabled }: AxeModeProps) {
   const childrenRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
-    if (disabled || interactive) {
+    if (disabled || interactive || !childrenRef.current) {
       return;
     }
 
-    if (childrenRef.current) {
-      if (idleId.current && 'cancelIdleCallback' in window) {
-        window.cancelIdleCallback(idleId.current);
-        idleId.current = null;
-      }
+    if (idleId.current && 'cancelIdleCallback' in window) {
+      window.cancelIdleCallback(idleId.current);
+      idleId.current = null;
+    }
 
+    function getViolations() {
+      const validateNode = getValidator(axe);
+      validateNode(childrenRef.current as ElementContext).then(setViolations);
+    }
+
+    function callback() {
       // Safari does not support requestIdleCallback 😔
       if ('requestIdleCallback' in window) {
         idleId.current = window.requestIdleCallback(getViolations);
@@ -226,17 +231,26 @@ export default function AxeModeImpl({ children, disabled }: AxeModeProps) {
         getViolations();
       }
     }
+
+    const observer = new MutationObserver(callback);
+    // We need to run this once so we don't wait for
+    // DOM mutations to display the violations.
+    callback();
+
+    observer.observe(childrenRef.current, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+
     return () => {
       if (idleId.current && 'cancelIdleCallback' in window) {
         window.cancelIdleCallback(idleId.current);
         idleId.current = null;
       }
+      observer.disconnect();
     };
-    function getViolations() {
-      const validateNode = getValidator(axe);
-      validateNode(childrenRef.current as ElementContext).then(setViolations);
-    }
-  }, [children, disabled, interactive, axe]);
+  }, [disabled, interactive]);
 
   React.useEffect(() => {
     function listener(e: KeyboardEvent) {
