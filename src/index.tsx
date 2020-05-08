@@ -80,6 +80,7 @@ function Violation({
 
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault(); // Prevent scroll
       toggle();
     }
   }
