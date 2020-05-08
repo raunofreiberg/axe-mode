@@ -137,6 +137,13 @@ function Violation({
     };
   }, [open, target]);
 
+  React.useEffect(() => {
+    overlayRef?.current?.setAttribute(
+      'aria-label',
+      `${open ? 'Close' : 'Open'} violation overlay`
+    );
+  }, [open, overlayRef]);
+
   if (!open) {
     return null;
   }
