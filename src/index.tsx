@@ -78,6 +78,12 @@ function Violation({
     setOpen(false);
   }
 
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      toggle();
+    }
+  }
+
   React.useEffect(() => {
     const targetNode = document.querySelector(target);
     const overlayNode = document.createElement('axe-mode-overlay');
@@ -91,12 +97,21 @@ function Violation({
 
     observe();
     document.body.appendChild(overlayNode);
+
+    targetNode.setAttribute('tabindex', '-1');
+    overlayNode.setAttribute('role', 'button');
+    overlayNode.setAttribute('tabindex', '0');
+
     overlayNode.addEventListener('mousedown', toggle);
+    overlayNode.addEventListener('keydown', handleKeydown);
+    overlayNode.addEventListener('blur', close);
 
     return () => {
       unobserve();
       document.body.removeChild(overlayNode);
       overlayNode.removeEventListener('mousedown', toggle);
+      overlayNode.removeEventListener('keydown', handleKeydown);
+      overlayNode.removeEventListener('blur', close);
     };
   }, [target]);
 
