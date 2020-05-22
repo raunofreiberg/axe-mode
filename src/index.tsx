@@ -1,10 +1,17 @@
 import * as React from 'react';
 import { AxeModeProps } from './axe-mode';
 
-export const AxeMode =
-  process.env.NODE_ENV === 'development'
-    ? React.lazy(() => import('./axe-mode'))
-    : React.Fragment;
+const AxeMode = React.lazy(() => import('./axe-mode'));
+
+export default function Loader(props: AxeModeProps) {
+  if (process.env.NODE_ENV === 'development') {
+    return (
+      <React.Suspense fallback={null}>
+        <AxeMode {...props} />
+      </React.Suspense>
+    );
+  }
+  return <React.Fragment>{props.children}</React.Fragment>;
+}
 
 export { AxeModeProps };
-export default AxeMode;

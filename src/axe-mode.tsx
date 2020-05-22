@@ -1,10 +1,9 @@
 import './styles.css';
 import * as React from 'react';
-import { ElementContext, Result } from 'axe-core';
+import axe, { ElementContext, Result } from 'axe-core';
 import Popover from '@reach/popover';
 import observeRect from '@reach/observe-rect';
 import { IconMinor, IconModerate, IconSevere } from './icons';
-import axe from 'axe-core';
 
 type ViolationsByNode = Array<{ node: string; violations: Result[] }>;
 type AxeCoreModule = typeof axe;
@@ -234,7 +233,7 @@ export default function AxeModeImpl({ children, disabled }: AxeModeProps) {
       }
     };
     function getViolations() {
-      const validateNode = getValidator(axe as AxeCoreModule);
+      const validateNode = getValidator(axe);
       validateNode(childrenRef.current as ElementContext).then(setViolations);
     }
   }, [children, disabled, interactive, axe]);
