@@ -92,6 +92,9 @@ function Violation({
       setOverlayPosition(overlayNode, targetRect);
     });
 
+    const bounds = targetNode.getBoundingClientRect();
+    setOverlayPosition(overlayNode, bounds);
+
     observe();
     document.body.appendChild(overlayNode);
     overlayNode.addEventListener('mousedown', toggle);
