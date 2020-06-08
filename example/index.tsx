@@ -9,12 +9,24 @@ function Subtitle() {
 }
 
 function Image() {
+  const ref = React.useRef<HTMLImageElement | null>(null);
+
+  React.useEffect(() => {
+    // For testing whether violations from
+    // DOM mutations are displayed.
+    const id = setTimeout(() => {
+      ref?.current?.setAttribute('alt', 'Avatar');
+    }, 3000);
+
+    return () => clearTimeout(id);
+  }, [ref]);
+
   return (
     <img
+      ref={ref}
       src="https://avatars1.githubusercontent.com/u/23662329?v=4"
       width="40"
       height="40"
-      id="hey"
     />
   );
 }
