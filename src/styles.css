@@ -111,6 +111,7 @@ axe-mode-overlay {
   width: 24px;
   height: 24px;
   border: 0;
+  background: none;
   padding: 0;
   margin: 0;
   cursor: pointer;
