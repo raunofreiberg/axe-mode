@@ -28,7 +28,7 @@ axe-mode-overlay {
   padding: 16px;
   margin: 8px 0;
   z-index: 1337;
-  animation: slideDown 0.4s ease-in-out;
+  animation: slideDown 0.4s cubic-bezier(.2, .8, .4, 1);
 }
 .popover h2 {
   margin: 0;
