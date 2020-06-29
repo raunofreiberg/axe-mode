@@ -43,6 +43,8 @@ function App() {
 
 Launch your application as usual. Any violations of accessibility will show up as an overlay. If you wish to interact with your application, overlays can be toggled on/off with `Ctrl + I`.
 
+You can safely leave the component around your application since [this whole library and its dependencies will be dropped in production.](https://github.com/raunofreiberg/axe-mode/blob/master/src/index.tsx#L7)
+
 **Note**: Make sure to only run in production by using the `disabled` prop with your environment variable.
 
 ## Development
